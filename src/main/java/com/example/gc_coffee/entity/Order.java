@@ -8,35 +8,35 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @NoArgsConstructor
 @EntityListeners(value = AuditingEntityListener.class)
-@Table(name = "order_item")
+@Table(name = "orders")
 @Entity
-public class OrderItemEntity {
+public class Order {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long orderItemId;
+    private Long orderId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "order_id", nullable = false)
-    private OrderEntity order;
+    @Column(name = "email", nullable = false)
+    private String email;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "product_id", nullable = false)
-    private ProductEntity product;
+    @Column(name = "address", nullable = false)
+    private String address;
+
+    @Column(name = "postcode", nullable = false)
+    private String postcode;
+
+
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<OrderItem> orderItems;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "category", nullable = false)
-    private ProductCategory category;
-
-    @Column(nullable = false)
-    private Integer price;
-
-    @Column(nullable = false)
-    private Integer quantity;
+    @Column(name = "order_status", nullable = false)
+    private OrderStatus orderStatus;
 
     @CreatedDate
     @Column(name = "created_at", nullable = false, updatable = false)
@@ -48,5 +48,4 @@ public class OrderItemEntity {
 
     @Column(name = "deleted_at")
     private LocalDateTime deletedAt;
-
 }
