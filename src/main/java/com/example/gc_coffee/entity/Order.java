@@ -1,6 +1,8 @@
 package com.example.gc_coffee.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
@@ -12,9 +14,11 @@ import java.util.List;
 
 @Getter
 @NoArgsConstructor
+@AllArgsConstructor
 @EntityListeners(value = AuditingEntityListener.class)
 @Table(name = "orders")
 @Entity
+@Builder
 public class Order {
 
     @Id
