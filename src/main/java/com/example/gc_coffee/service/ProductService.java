@@ -21,8 +21,8 @@ public class ProductService {
     @Transactional
     public void register(final ProductCreateRequest request) {
         Product product = Product.create(
-                request.getProductName(),
                 request.getProductCategory(),
+                request.getProductName(),
                 request.getPrice(),
                 request.getDescription()
         );
@@ -32,7 +32,7 @@ public class ProductService {
     /**
      * 상품 전체 조회
      */
-    public List<Product> retrieve() {
+    public List<Product> retrieveAll() {
         return productRepository.findAll();
     }
 }

@@ -86,14 +86,14 @@ public class Product {
     }
 
     public static Product create(
-            final String productName,
             final ProductCategory productCategory,
+            final String productName,
             final Integer price,
             final String description
     ) {
         return Product.builder()
-                .productName(productName)
                 .productCategory(productCategory)
+                .productName(productName)
                 .price(price)
                 .description(description)
                 .build();

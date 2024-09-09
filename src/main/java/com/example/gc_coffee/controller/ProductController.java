@@ -39,7 +39,7 @@ public class ProductController {
      */
     @GetMapping
     public ResponseEntity<ApiResponse> retrieveAll() {
-        List<Product> productList = productService.retrieve();
+        List<Product> productList = productService.retrieveAll();
 
         // List<Product>를 List<ProductResponse>로 변환
         List<ProductResponse> response = productList.stream()
