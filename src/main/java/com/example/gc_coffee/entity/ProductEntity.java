@@ -9,6 +9,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
@@ -22,6 +24,8 @@ import java.time.LocalDateTime;
 @EntityListeners(value = AuditingEntityListener.class)
 @Table(name = "product")
 @Entity
+@AllArgsConstructor     //모든 필드를 매개변수로 받는 생성자 추가
+@Builder                //빌더 패턴 어노테이션 추가
 public class ProductEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -51,4 +55,16 @@ public class ProductEntity {
     @Column(name = "deleted_at")
     private LocalDateTime deletedAt;
 
+    //setter 설정
+    public void changeProductName(String productName) {
+        this.productName = productName;
+    }
+
+    public void changePrice(Integer price) {
+        this.price = price;
+    }
+
+    public void changeDescription(String description) {
+        this.description = description;
+    }
 }
