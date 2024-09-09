@@ -28,11 +28,11 @@ public class OrderService {
     private final OrderItemRepository orderItemRepository;
 
     public void register(OrderCreateRequest orderCreateRequest) {
-        //주문 시간이 오후 2시 이후면 orderStatus 를 DELIVERED 로 설정.
+        //주문 시간이 오후 2시 이후면 orderStatus 를 SHIPPED 로 설정.
         LocalTime now = LocalTime.now();
         LocalTime cutoffTime = LocalTime.of(14, 0);
 
-        OrderStatus orderStatus = now.isAfter(cutoffTime) ? OrderStatus.CONFIRMED : OrderStatus.DELIVERED;
+        OrderStatus orderStatus = now.isAfter(cutoffTime) ? OrderStatus.CONFIRMED : OrderStatus.SHIPPED;
 
         //email 로 Order 검색 -> 처음 주문하는 고객이면 Order 생성
         Order order = orderRepository.findByEmail(orderCreateRequest.getEmail())
