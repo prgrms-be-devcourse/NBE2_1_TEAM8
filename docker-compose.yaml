@@ -1,0 +1,18 @@
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: coffee_mysql_container
+    volumes:
+      - ./db/data:/var/lib/mysql
+    ports:
+      - "3308:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: ${GC_COFFEE_MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${GC_COFFEE_MYSQL_DATABASE_NAME}
+      MYSQL_USER: ${GC_COFFEE_MYSQL_USER}
+      MYSQL_PASSWORD: ${GC_COFFEE_MYSQL_PASSWORD}
+    networks:
+      - gc_coffee
+
+networks:
+  gc_coffee:
