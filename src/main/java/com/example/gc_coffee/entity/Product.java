@@ -9,7 +9,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,15 +17,13 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import java.time.LocalDateTime;
 
-
 @Getter
 @NoArgsConstructor
 @EntityListeners(value = AuditingEntityListener.class)
 @Table(name = "product")
 @Entity
-@AllArgsConstructor     //모든 필드를 매개변수로 받는 생성자 추가
 @Builder                //빌더 패턴 어노테이션 추가
-public class ProductEntity {
+public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -67,4 +64,39 @@ public class ProductEntity {
     public void changeDescription(String description) {
         this.description = description;
     }
+
+    public Product(
+            Long id,
+            String productName,
+            ProductCategory productCategory,
+            Integer price,
+            String description,
+            LocalDateTime createdAt,
+            LocalDateTime updatedAt,
+            LocalDateTime deletedAt
+    ) {
+        this.id = id;
+        this.productName = productName;
+        this.productCategory = productCategory;
+        this.price = price;
+        this.description = description;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+        this.deletedAt = deletedAt;
+    }
+
+    public static Product create(
+            final String productName,
+            final ProductCategory productCategory,
+            final Integer price,
+            final String description
+    ) {
+        return Product.builder()
+                .productName(productName)
+                .productCategory(productCategory)
+                .price(price)
+                .description(description)
+                .build();
+    }
+
 }

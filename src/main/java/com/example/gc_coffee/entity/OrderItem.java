@@ -30,7 +30,7 @@ public class OrderItem {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id", nullable = false)
-    private ProductEntity product;
+    private Product product;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "category", nullable = false)
