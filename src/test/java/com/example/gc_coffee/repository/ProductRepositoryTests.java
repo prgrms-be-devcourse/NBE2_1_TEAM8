@@ -36,7 +36,7 @@ public class ProductRepositoryTests {
         // WHEN - 엔티티 저장
         ProductEntity savedProduct = productRepository.save(product);
 
-        // THEN - savedTodo가 널이 아니고 Id는 1일것
+        // THEN
         assertNotNull(savedProduct);
         assertEquals(1, savedProduct.getId());
     }
