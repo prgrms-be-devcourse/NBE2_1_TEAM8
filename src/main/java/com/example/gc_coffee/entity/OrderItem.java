@@ -1,6 +1,8 @@
 package com.example.gc_coffee.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
@@ -14,6 +16,8 @@ import java.time.LocalDateTime;
 @EntityListeners(value = AuditingEntityListener.class)
 @Table(name = "order_item")
 @Entity
+@AllArgsConstructor
+@Builder
 public class OrderItem {
 
     @Id
