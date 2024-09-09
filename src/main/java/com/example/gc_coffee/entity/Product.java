@@ -65,6 +65,10 @@ public class Product {
         this.description = description;
     }
 
+    public void changeProductCategory(ProductCategory productCategory) {
+        this.productCategory = productCategory;
+    }
+
     public Product(
             Long id,
             String productName,
