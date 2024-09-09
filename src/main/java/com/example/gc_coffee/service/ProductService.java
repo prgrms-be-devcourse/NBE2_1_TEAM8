@@ -14,7 +14,7 @@ public class ProductService {
     private final ProductRepository productRepository;
 
     /**
-     * 프로모션 등록
+     * 상품 등록
      */
     @Transactional
     public void register(final ProductCreateRequest request) {
