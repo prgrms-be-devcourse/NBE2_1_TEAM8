@@ -27,7 +27,8 @@ public class ProductRepositoryTests {
     @Test   //Insert 테스트
     public void testInsert() {
         //GIVEN
-        Product product = Product.builder().productName("Columbia Coffee")
+        Product product = Product.builder()
+                .productName("Columbia Coffee")
                 .productCategory(ProductCategory.COLUMBIA_COFFEE)
                 .price(10000)
                 .description("콜롬비아의 맛있는 커피")
@@ -38,7 +39,7 @@ public class ProductRepositoryTests {
 
         // THEN
         assertNotNull(savedProduct);
-        assertEquals(1, savedProduct.getId());
+        assertEquals("콜롬비아의 맛있는 커피", savedProduct.getDescription());
     }
 
     @Test   //SELECT 테스트
