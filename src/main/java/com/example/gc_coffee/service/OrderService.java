@@ -28,7 +28,7 @@ public class OrderService {
     private final OrderItemRepository orderItemRepository;
 
     public void register(OrderCreateRequest orderCreateRequest) {
-        //주문 시간이 오후 2시 이후면 orderStatus 를 SHIPPED 로 설정.
+        //주문 시간이 오후 2시 이후면 orderStatus 를 CONFIRMED 로 설정.
         LocalTime now = LocalTime.now();
         LocalTime cutoffTime = LocalTime.of(14, 0);
 
