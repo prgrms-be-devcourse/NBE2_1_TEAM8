@@ -51,4 +51,10 @@ public class OrderItem {
     @Column(name = "deleted_at")
     private LocalDateTime deletedAt;
 
+    public void changeQuantity(int quantity) {
+        this.quantity = quantity;
+    }
+
+
+
 }
