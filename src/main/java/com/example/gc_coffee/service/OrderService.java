@@ -2,11 +2,13 @@ package com.example.gc_coffee.service;
 
 import com.example.gc_coffee.dto.request.OrderCreateRequest;
 import com.example.gc_coffee.dto.request.OrderItemCreateRequest;
+import com.example.gc_coffee.dto.response.OrderResponse;
 import com.example.gc_coffee.entity.Order;
 import com.example.gc_coffee.entity.OrderItem;
 import com.example.gc_coffee.entity.OrderStatus;
 import com.example.gc_coffee.entity.Product;
-import com.example.gc_coffee.repository.OrderItemRepository;
+import com.example.gc_coffee.exception.OrderException;
+import com.example.gc_coffee.exception.ProductException;
 import com.example.gc_coffee.repository.OrderRepository;
 import com.example.gc_coffee.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
@@ -25,42 +27,45 @@ public class OrderService {
 
     private final ProductRepository productRepository;
     private final OrderRepository orderRepository;
-    private final OrderItemRepository orderItemRepository;
 
-    public void register(OrderCreateRequest orderCreateRequest) {
+    public OrderResponse register(OrderCreateRequest orderCreateRequest) {
         //주문 시간이 오후 2시 이후면 orderStatus 를 CONFIRMED 로 설정.
         LocalTime now = LocalTime.now();
         LocalTime cutoffTime = LocalTime.of(14, 0);
 
         OrderStatus orderStatus = now.isAfter(cutoffTime) ? OrderStatus.CONFIRMED : OrderStatus.SHIPPED;
 
-        //email 로 Order 검색 -> 처음 주문하는 고객이면 Order 생성
-        Order order = orderRepository.findByEmail(orderCreateRequest.getEmail())
-                .orElseGet(() -> orderRepository.save(Order.builder()
-                            .email(orderCreateRequest.getEmail())
-                            .address(orderCreateRequest.getAddress())
-                            .postcode(orderCreateRequest.getPostcode())
-                            .orderStatus(orderStatus)
-                            .orderItems(new ArrayList<>())
-                            .build()));
+        //Order 객체 생성
+        Order order = Order.builder()
+                .email(orderCreateRequest.getEmail())
+                .address(orderCreateRequest.getAddress())
+                .postcode(orderCreateRequest.getPostcode())
+                .orderStatus(orderStatus)
+                .orderItems(new ArrayList<>())
+                .build();
 
-        //OrderItem(Product, Order 정보 필요) 객체 생성 후 저장
+        //OrderItem(Product, Order 정보 필요) 객체 생성 및 저장
         for (OrderItemCreateRequest orderItemCreateRequest : orderCreateRequest.getOrderItems()) {
             Product product = productRepository.findById(orderItemCreateRequest.getProductId())
-                    .orElseThrow(RuntimeException::new);
+                    .orElseThrow(ProductException.NOT_FOUND::get);
 
             OrderItem orderItem = OrderItem.builder()
                     .product(product)
                     .order(order)
-                    .category(orderItemCreateRequest.getCategory())
-                    .price(orderItemCreateRequest.getPrice())
+                    .category(product.getProductCategory())
+                    .price(product.getPrice())
                     .quantity(orderItemCreateRequest.getQuantity())
                     .build();
 
-            orderItemRepository.save(orderItem);
             order.getOrderItems().add(orderItem);
         }
 
-        orderRepository.save(order);
+        //Order 및 OrderItem 저장
+        try {
+            Order saved = orderRepository.save(order);
+            return new OrderResponse(saved);
+        } catch (Exception e) {
+            throw OrderException.CREATION_FAILED.get();
+        }
     }
 }
