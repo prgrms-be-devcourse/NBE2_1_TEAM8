@@ -102,11 +102,14 @@ public class OrderService {
                 orderItem.setQuantity(newQuantity);
                 orderItemRepository.save(orderItem);
             }
+            int totalPrice = orderItem.getQuantity() * orderItem.getProduct().getPrice();
+
             OrderItemResponse response = OrderItemResponse.builder()
                     .orderItemId(orderItem.getOrderItemId())
                     .productId(orderItem.getProduct().getId())
                     .quantity(orderItem.getQuantity())
                     .price(orderItem.getPrice())
+                    .totalPrice(totalPrice)
                     .build();
 
             updatedOrderItems.add(response);
