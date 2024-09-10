@@ -18,6 +18,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -67,5 +69,13 @@ public class OrderService {
         } catch (Exception e) {
             throw OrderException.CREATION_FAILED.get();
         }
+    }
+
+    public List<OrderResponse> readOrders(String email) {
+        List<Order> orders = orderRepository.findAllByEmail(email);
+
+        return orders.stream()
+                .map(OrderResponse::new)
+                .collect(Collectors.toList());
     }
 }
