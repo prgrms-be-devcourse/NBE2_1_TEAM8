@@ -3,12 +3,15 @@ package com.example.gc_coffee.controller;
 import com.example.gc_coffee.common.ApiResponse;
 import com.example.gc_coffee.dto.request.OrderCreateRequest;
 import com.example.gc_coffee.dto.request.OrderUpdateRequest;
+import com.example.gc_coffee.dto.response.OrderItemResponse;
 import com.example.gc_coffee.dto.response.OrderResponse;
 import com.example.gc_coffee.service.OrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -28,7 +31,8 @@ public class OrderController {
             @PathVariable Long orderId,
             @RequestBody OrderUpdateRequest orderUpdateRequest) {
 
-        orderService.updateOrderItemQuantities(orderId, orderUpdateRequest);
-        return ResponseEntity.ok(ApiResponse.success(null));
+        List<OrderItemResponse> updatedOrderItems = orderService.updateOrderItemQuantities(orderId, orderUpdateRequest);
+
+        return ResponseEntity.ok(ApiResponse.success(updatedOrderItems));
     }
 }

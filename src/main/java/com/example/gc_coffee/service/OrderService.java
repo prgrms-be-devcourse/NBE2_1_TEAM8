@@ -3,6 +3,7 @@ package com.example.gc_coffee.service;
 import com.example.gc_coffee.dto.request.OrderCreateRequest;
 import com.example.gc_coffee.dto.request.OrderItemCreateRequest;
 import com.example.gc_coffee.dto.request.OrderUpdateRequest;
+import com.example.gc_coffee.dto.response.OrderItemResponse;
 import com.example.gc_coffee.dto.response.OrderResponse;
 import com.example.gc_coffee.entity.Order;
 import com.example.gc_coffee.entity.OrderItem;
@@ -20,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -73,34 +75,40 @@ public class OrderService {
         }
     }
 
-    public void updateOrderItemQuantities(Long orderId, OrderUpdateRequest orderUpdateRequest) {
+    public List<OrderItemResponse> updateOrderItemQuantities(Long orderId, OrderUpdateRequest orderUpdateRequest) {
 
         Order order = orderRepository.findById(orderId)
                 .orElseThrow(OrderException.NOT_FOUND::get);
 
-        if (orderUpdateRequest.getItemQuantityUpdates() != null) {
-            for (Map.Entry<Long, Integer> entry : orderUpdateRequest.getItemQuantityUpdates().entrySet()) {
-                Long orderItemId = entry.getKey();
-                Integer newQuantity = entry.getValue();
+        List<OrderItemResponse> updatedOrderItems = new ArrayList<>();
 
-                OrderItem orderItem = orderItemRepository.findById(orderItemId)
-                        .orElseThrow(OrderException.ITEM_NOT_FOUND::get);
 
-                if (!orderItem.getOrder().getOrderId().equals(orderId)) {
-                    throw new RuntimeException("해당 주문에 속하지 않는 항목입니다.");
-                }
+        orderUpdateRequest.getItemQuantityUpdates().forEach((orderItemId, newQuantity) -> {
+            OrderItem orderItem = orderItemRepository.findById(orderItemId)
+                    .orElseThrow(OrderException.ITEM_NOT_FOUND::get);
 
-                // 수량이 0 이하인 경우 삭제 처리
-                if (newQuantity <= 0) {
-                    orderItemRepository.delete(orderItem);
-                } else {
-                    orderItem.setQuantity(newQuantity);
-                    orderItemRepository.save(orderItem);
-                }
+            // 수량이 0 이하인 경우 삭제 처리
+            if (newQuantity <= 0) {
+                orderItemRepository.delete(orderItem);
+            } else {
+
+                orderItem.setQuantity(newQuantity);
+                orderItemRepository.save(orderItem);
             }
-        } else {
-            throw OrderException.UPDATE_FAILED.get();
-        }
+
+
+            OrderItemResponse response = OrderItemResponse.builder()
+                    .orderItemId(orderItem.getOrderItemId())
+                    .productId(orderItem.getProduct().getId())
+                    .quantity(orderItem.getQuantity())
+                    .price(orderItem.getPrice())
+                    .build();
+
+            updatedOrderItems.add(response);
+        });
+
+        return updatedOrderItems;
     }
+
 
 }
