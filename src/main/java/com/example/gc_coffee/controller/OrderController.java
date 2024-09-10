@@ -7,10 +7,7 @@ import com.example.gc_coffee.service.OrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -23,5 +20,10 @@ public class OrderController {
     public ResponseEntity<ApiResponse> register(@Validated @RequestBody OrderCreateRequest orderCreateRequest) {
         OrderResponse orderResponse = orderService.register(orderCreateRequest);
         return ResponseEntity.ok(ApiResponse.success(orderResponse));
+    }
+
+    @GetMapping("/{email}")
+    public ResponseEntity<ApiResponse> read(@PathVariable String email) {
+        return ResponseEntity.ok(ApiResponse.success(orderService.readOrders(email)));
     }
 }
