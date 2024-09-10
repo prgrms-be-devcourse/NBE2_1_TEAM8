@@ -10,4 +10,5 @@ public class OrderItemResponse {
     private Long productId;
     private int quantity;
     private int price;
+    private int totalPrice;
 }
