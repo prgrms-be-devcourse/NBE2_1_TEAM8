@@ -30,8 +30,8 @@ public class OrderResponse {
         this.postcode = order.getPostcode();
         this.orderStatus = order.getOrderStatus();
         this.createdAt = order.getCreatedAt();
-        this.totalOrderAmount = calculateTotalOrderAmount(order);
-        this.orderItems = convertOrderItemsToResponse(order);
+        this.totalOrderAmount = calculateTotalOrderAmount(order); //장바구니 총금액
+        this.orderItems = convertOrderItemsToResponse(order);//항목별 총금액
     }
 
     // 전체 주문 금액 계산 메서드
