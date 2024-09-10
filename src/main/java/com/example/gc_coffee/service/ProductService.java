@@ -9,6 +9,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.GetMapping;
+
 import java.util.List;
 
 
@@ -96,10 +98,14 @@ public class ProductService {
             log.error("Error removing product: " + e.getMessage());
             throw ProductException.NOT_REMOVED.get();
         }
+
+    }
+
     /**
      * 상품 전체 조회
      */
     public List<Product> retrieveAll() {
         return productRepository.findAll();
     }
+
 }
