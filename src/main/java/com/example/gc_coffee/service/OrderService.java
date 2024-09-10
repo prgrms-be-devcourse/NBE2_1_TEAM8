@@ -2,6 +2,7 @@ package com.example.gc_coffee.service;
 
 import com.example.gc_coffee.dto.request.OrderCreateRequest;
 import com.example.gc_coffee.dto.request.OrderItemCreateRequest;
+import com.example.gc_coffee.dto.request.OrderUpdateRequest;
 import com.example.gc_coffee.dto.response.OrderResponse;
 import com.example.gc_coffee.entity.Order;
 import com.example.gc_coffee.entity.OrderItem;
@@ -9,6 +10,7 @@ import com.example.gc_coffee.entity.OrderStatus;
 import com.example.gc_coffee.entity.Product;
 import com.example.gc_coffee.exception.OrderException;
 import com.example.gc_coffee.exception.ProductException;
+import com.example.gc_coffee.repository.OrderItemRepository;
 import com.example.gc_coffee.repository.OrderRepository;
 import com.example.gc_coffee.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Map;
 
 @Service
 @Transactional
@@ -27,6 +30,7 @@ public class OrderService {
 
     private final ProductRepository productRepository;
     private final OrderRepository orderRepository;
+    private final OrderItemRepository orderItemRepository;
 
     public OrderResponse register(OrderCreateRequest orderCreateRequest) {
         //주문 시간이 오후 2시 이후면 orderStatus 를 CONFIRMED 로 설정.
@@ -66,6 +70,28 @@ public class OrderService {
             return new OrderResponse(saved);
         } catch (Exception e) {
             throw OrderException.CREATION_FAILED.get();
+        }
+    }
+
+    public void updateOrderItemQuantities(OrderUpdateRequest orderUpdateRequest) {
+
+        if (orderUpdateRequest.getItemQuantityUpdates() != null) {
+            for (Map.Entry<Long, Integer> entry : orderUpdateRequest.getItemQuantityUpdates().entrySet()) {
+                Long orderItemId = entry.getKey();
+                Integer newQuantity = entry.getValue();
+
+                OrderItem orderItem = orderItemRepository.findById(orderItemId)
+                        .orElseThrow(() -> new RuntimeException("주문 항목을 찾을 수 없습니다."));
+
+                // 수량이 0 이하인 경우 삭제
+                if (newQuantity <= 0) {
+                    orderItemRepository.delete(orderItem);
+                } else {
+                    orderItem.setQuantity(newQuantity);
+                    orderItemRepository.save(orderItem);
+                }
+            }
+
         }
     }
 }
