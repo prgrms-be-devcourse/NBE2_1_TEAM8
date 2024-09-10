@@ -29,7 +29,7 @@ public class ProductRepositoryTests {
         //GIVEN
         Product product = Product.builder()
                 .productName("Columbia Coffee")
-                .productCategory(ProductCategory.COLUMBIA_COFFEE)
+                .productCategory(ProductCategory.COFFEE_BEAN_PACKAGE)
                 .price(10000)
                 .description("콜롬비아의 맛있는 커피")
                 .build();
