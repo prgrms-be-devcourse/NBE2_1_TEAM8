@@ -1,6 +1,5 @@
 package com.example.gc_coffee.dto.request;
 
-import com.example.gc_coffee.entity.ProductCategory;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
