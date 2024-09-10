@@ -52,8 +52,8 @@ public class OrderService {
             OrderItem orderItem = OrderItem.builder()
                     .product(product)
                     .order(order)
-                    .category(orderItemCreateRequest.getCategory())
-                    .price(orderItemCreateRequest.getPrice())
+                    .category(product.getProductCategory())
+                    .price(product.getPrice())
                     .quantity(orderItemCreateRequest.getQuantity())
                     .build();
 
