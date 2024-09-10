@@ -30,7 +30,7 @@ class ProductServiceTest {
         // given
         // 상품1 생성
         ProductCreateRequest request1 = new ProductCreateRequest(
-                ProductCategory.BRAZIL_SERRA_DO_COFFEE,
+                ProductCategory.COFFEE_BEAN_PACKAGE,
                 "브라질 세라도 커피",
                 6500,
                 "브라질 맛좋은 커피"
@@ -44,7 +44,7 @@ class ProductServiceTest {
 
         // 상품2 생성
         ProductCreateRequest request2 = new ProductCreateRequest(
-                ProductCategory.COLUMBIA_COFFEE,
+                ProductCategory.COFFEE_BEAN_PACKAGE,
                 "콜롬비아 커피",
                 5000,
                 "콜롬비아 맛좋은 커피"

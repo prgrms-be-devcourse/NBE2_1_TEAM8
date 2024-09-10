@@ -39,7 +39,7 @@ public class ProductServiceTests {
                 .id(productId)
                 .productName("Old Coffee")
                 .price(30000)
-                .productCategory(ProductCategory.COLUMBIA_QUINDIO)
+                .productCategory(ProductCategory.COFFEE_BEAN_PACKAGE)
                 .description("기존 커피")
                 .build();
 
@@ -47,7 +47,7 @@ public class ProductServiceTests {
         modifiedProduct.setPid(productId);
         modifiedProduct.setProductName("Test Coffee");
         modifiedProduct.setPrice(50000);
-        modifiedProduct.setProductCategory(ProductCategory.COLUMBIA_COFFEE);
+        modifiedProduct.setProductCategory(ProductCategory.COFFEE_BEAN_PACKAGE);
         modifiedProduct.setDescription("시음용 커피");
 
         // lenient()를 사용해 불필요한 stubbing 경고를 피함
@@ -72,7 +72,7 @@ public class ProductServiceTests {
         Product existingProduct = Product.builder()
                 .id(productId)
                 .productName("Old Coffee")
-                .productCategory(ProductCategory.COLUMBIA_QUINDIO)
+                .productCategory(ProductCategory.COFFEE_BEAN_PACKAGE)
                 .price(30000)
                 .build();
 

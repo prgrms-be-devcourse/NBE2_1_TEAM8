@@ -4,10 +4,7 @@ import lombok.Getter;
 
 @Getter
 public enum ProductCategory {
-    COLUMBIA_COFFEE("Columbia Coffee"),
-    COLUMBIA_QUINDIO("Columbia Quindio"),
-    BRAZIL_SERRA_DO_COFFEE("Brazil Serra Do Coffee"),
-    ETHIOPIA_SIDAMO("Ethiopia Sidamo");
+    COFFEE_BEAN_PACKAGE("Coffee Bean Package");
 
     private final String status;
 
