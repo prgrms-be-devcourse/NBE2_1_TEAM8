@@ -27,7 +27,6 @@ public class OrderController {
             @PathVariable Long orderId,
             @RequestBody OrderUpdateRequest orderUpdateRequest) {
 
-        // 서비스 메서드를 호출하여 수량 업데이트 및 삭제 처리
         orderService.updateOrderItemQuantities(orderUpdateRequest);
         return ResponseEntity.ok(ApiResponse.success(null));
     }
