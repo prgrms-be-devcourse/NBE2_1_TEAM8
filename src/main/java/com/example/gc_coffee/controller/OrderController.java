@@ -28,7 +28,7 @@ public class OrderController {
             @PathVariable Long orderId,
             @RequestBody OrderUpdateRequest orderUpdateRequest) {
 
-        orderService.updateOrderItemQuantities(orderUpdateRequest);
+        orderService.updateOrderItemQuantities(orderId, orderUpdateRequest);
         return ResponseEntity.ok(ApiResponse.success(null));
     }
 }

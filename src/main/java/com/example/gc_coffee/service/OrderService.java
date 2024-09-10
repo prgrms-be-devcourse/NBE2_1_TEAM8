@@ -73,17 +73,26 @@ public class OrderService {
         }
     }
 
-    public void updateOrderItemQuantities(OrderUpdateRequest orderUpdateRequest) {
+    public void updateOrderItemQuantities(Long orderId, OrderUpdateRequest orderUpdateRequest) {
+        // 주문 조회 (orderId 사용)
+        Order order = orderRepository.findById(orderId)
+                .orElseThrow(() -> new RuntimeException("주문을 찾을 수 없습니다."));
 
         if (orderUpdateRequest.getItemQuantityUpdates() != null) {
             for (Map.Entry<Long, Integer> entry : orderUpdateRequest.getItemQuantityUpdates().entrySet()) {
                 Long orderItemId = entry.getKey();
                 Integer newQuantity = entry.getValue();
 
+                // 주문 항목 조회
                 OrderItem orderItem = orderItemRepository.findById(orderItemId)
-                        .orElseThrow(() -> new RuntimeException("주문 항목을 찾을 수 없습니다."));
+                        .orElseThrow(OrderException.ITEM_NOT_FOUND::get);
 
-                // 수량이 0 이하인 경우 삭제
+                // 해당 주문에 속한 항목인지 확인 (optional)
+                if (!orderItem.getOrder().getOrderId().equals(orderId)) {
+                    throw new RuntimeException("해당 주문에 속하지 않는 항목입니다.");
+                }
+
+                // 수량 수정 또는 삭제
                 if (newQuantity <= 0) {
                     orderItemRepository.delete(orderItem);
                 } else {
@@ -91,7 +100,8 @@ public class OrderService {
                     orderItemRepository.save(orderItem);
                 }
             }
-
+        } else {
+            throw OrderException.UPDATE_FAILED.get();
         }
     }
 }
