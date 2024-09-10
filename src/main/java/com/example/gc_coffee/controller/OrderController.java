@@ -23,7 +23,7 @@ public class OrderController {
     }
 
     @PutMapping("/{orderId}/items")
-    public ResponseEntity<ApiResponse<Void>> updateOrderItems(
+    public ResponseEntity<ApiResponse> updateOrderItems(
             @PathVariable Long orderId,
             @RequestBody OrderUpdateRequest orderUpdateRequest) {
 
