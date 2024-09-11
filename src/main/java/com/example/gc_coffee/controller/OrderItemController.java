@@ -16,8 +16,8 @@ public class OrderItemController {
     private OrderItemService orderItemService;
 
     @GetMapping
-    public ResponseEntity<List<OrderItemResponse>> getOrderItemsByStatus() {
-        List<OrderItemResponse> orderItems = orderItemService.getOrderedItems();
+    public ResponseEntity<List<OrderItemResponse>> getOrderItemsByEmail(@RequestParam String email) {
+        List<OrderItemResponse> orderItems = orderItemService.getOrderedItemsByEmail(email);
         if (orderItems.isEmpty()) {
             return ResponseEntity.noContent().build();
         }

@@ -18,24 +18,25 @@ public class OrderItemService {
     @Autowired
     private OrderItemRepository orderItemRepository;
 
-    public List<OrderItemResponse> getOrderedItems() {
-        // 주문 상태가 ORDERED인 항목만 조회
+    public List<OrderItemResponse> getOrderedItemsByEmail(String email) {
         List<OrderItem> orderItems = orderItemRepository.findByOrder_OrderStatus(OrderStatus.ORDERED);
 
-        return orderItems.stream().map(orderItem -> {
-            Order order = orderItem.getOrder();
-            Product product = orderItem.getProduct();
-            return OrderItemResponse.builder()
-                    .orderItemId(orderItem.getOrderItemId())
-                    .productId(orderItem.getProduct().getId())
-                    .quantity(orderItem.getQuantity())
-                    .orderId(order.getOrderId())
-                    .productName(product.getProductName())
-                    .email(order.getEmail())
-                    .address(order.getAddress())
-                    .postcode(order.getPostcode())
-                    .orderStatus(order.getOrderStatus())
-                    .build();
-        }).collect(Collectors.toList());
+        return orderItems.stream()
+                .filter(orderItem -> orderItem.getOrder().getEmail().equals(email))  // 이메일로 필터링
+                .map(orderItem -> {
+                    Order order = orderItem.getOrder();
+                    Product product = orderItem.getProduct();
+                    return OrderItemResponse.builder()
+                            .orderItemId(orderItem.getOrderItemId())
+                            .productId(orderItem.getProduct().getId())
+                            .quantity(orderItem.getQuantity())
+                            .orderId(order.getOrderId())
+                            .productName(product.getProductName())
+                            .email(order.getEmail())
+                            .address(order.getAddress())
+                            .postcode(order.getPostcode())
+                            .orderStatus(order.getOrderStatus())
+                            .build();
+                }).collect(Collectors.toList());
     }
 }
