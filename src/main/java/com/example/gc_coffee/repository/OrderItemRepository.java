@@ -9,6 +9,5 @@ import java.util.Optional;
 
 public interface OrderItemRepository extends JpaRepository<OrderItem, Long> {
     Optional<OrderItem> findByOrder_OrderId(Long orderId);
-    List<OrderItem> findByOrder_OrderStatus(OrderStatus status);  // 주문 상태에 따른 주문 항목 필터링
-
+    List<OrderItem> findByOrder_OrderStatus(OrderStatus status);
 }
