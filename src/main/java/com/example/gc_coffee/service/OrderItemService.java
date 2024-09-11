@@ -4,6 +4,7 @@ import com.example.gc_coffee.dto.response.OrderItemResponse;
 import com.example.gc_coffee.entity.Order;
 import com.example.gc_coffee.entity.OrderItem;
 import com.example.gc_coffee.entity.OrderStatus;
+import com.example.gc_coffee.entity.Product;
 import com.example.gc_coffee.repository.OrderItemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,11 +24,13 @@ public class OrderItemService {
 
         return orderItems.stream().map(orderItem -> {
             Order order = orderItem.getOrder();
+            Product product = orderItem.getProduct();
             return OrderItemResponse.builder()
                     .orderItemId(orderItem.getOrderItemId())
                     .productId(orderItem.getProduct().getId())
                     .quantity(orderItem.getQuantity())
                     .orderId(order.getOrderId())
+                    .productName(product.getProductName())
                     .email(order.getEmail())
                     .address(order.getAddress())
                     .postcode(order.getPostcode())
