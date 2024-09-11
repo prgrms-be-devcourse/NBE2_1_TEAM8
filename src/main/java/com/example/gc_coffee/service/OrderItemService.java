@@ -28,6 +28,7 @@ public class OrderItemService {
                     .productId(orderItem.getProduct().getId())
                     .quantity(orderItem.getQuantity())
                     .orderId(order.getOrderId())
+                    .email(order.getEmail())
                     .address(order.getAddress())
                     .postcode(order.getPostcode())
                     .orderStatus(order.getOrderStatus())

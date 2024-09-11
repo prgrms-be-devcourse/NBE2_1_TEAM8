@@ -14,7 +14,9 @@ public class OrderItemResponse {
     private int totalPrice;
 
     private Long orderId;
+    private String email;
     private String address;
     private String postcode;
     private OrderStatus orderStatus;
 }
+
