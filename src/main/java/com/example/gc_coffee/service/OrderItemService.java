@@ -18,6 +18,14 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
+import com.example.gc_coffee.dto.response.OrderItemResponse;
+import com.example.gc_coffee.entity.OrderStatus;
+import com.example.gc_coffee.entity.Product;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
@@ -27,6 +35,28 @@ public class OrderItemService {
     private final OrderRepository orderRepository;
     private final OrderItemRepository orderItemRepository;
 
+    public List<OrderItemResponse> getOrderedItemsByEmail(String email) {
+        List<OrderItem> orderItems = orderItemRepository.findByOrder_OrderStatus(OrderStatus.ORDERED);
+
+        return orderItems.stream()
+                .filter(orderItem -> orderItem.getOrder().getEmail().equals(email))  // 이메일로 필터링
+                .map(orderItem -> {
+                    Order order = orderItem.getOrder();
+                    Product product = orderItem.getProduct();
+                    return OrderItemResponse.builder()
+                            .orderItemId(orderItem.getOrderItemId())
+                            .productId(orderItem.getProduct().getId())
+                            .quantity(orderItem.getQuantity())
+                            .orderId(order.getOrderId())
+                            .productName(product.getProductName())
+                            .email(order.getEmail())
+                            .address(order.getAddress())
+                            .postcode(order.getPostcode())
+                            .orderStatus(order.getOrderStatus())
+                            .build();
+                }).collect(Collectors.toList());
+    }
+  
     @Transactional
     public OrderItemUpdateRequest modify(OrderItemModificationRequest request) {
         // 수정하려는 주문 목록을 데이터베이스에서 조회
@@ -82,3 +112,5 @@ public class OrderItemService {
 
 
 }
+
+
