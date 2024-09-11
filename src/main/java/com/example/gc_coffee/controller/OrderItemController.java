@@ -45,7 +45,7 @@ public class OrderItemController {
 
         try {
             OrderItemUpdateRequest updatedOrderItem = orderItemService.modify(request);
-            return ResponseEntity.ok(ApiResponse.success(null));
+            return ResponseEntity.ok(ApiResponse.success(updatedOrderItem));
         } catch (OrderItemTaskException e) {
             if (e.getMessage().equals(OrderItemException.NOT_FOUND.get().getMessage())) {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ApiResponse.error("주문목록을 찾을 수 없습니다."));
