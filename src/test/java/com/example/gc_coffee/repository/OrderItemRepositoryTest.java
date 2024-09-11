@@ -12,6 +12,7 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 import static com.example.gc_coffee.entity.QOrderItem.orderItem;
@@ -61,6 +62,33 @@ public class OrderItemRepositoryTest {
                 .build();
         orderItemRepository.save(orderItem1);
 
+    }
+
+    @Test
+    public void testFindByOrderStatus() {
+        // 상태가 ORDERED인 주문들을 조회
+        OrderStatus status = OrderStatus.ORDERED;
+
+        // 주문 상태가 ORDERED인 항목을 조회
+        List<OrderItem> orderItems = orderItemRepository.findByOrder_OrderStatus(status);
+
+        // 조회된 항목이 비어 있지 않음을 확인하고 주문 정보를 검증
+        assertThat(orderItems).isNotEmpty();
+
+        orderItems.forEach(orderItem -> {
+            Order order = orderItem.getOrder();
+            System.out.println("주문번호: " + order.getOrderId());
+            System.out.println("이메일: " + order.getEmail());
+            System.out.println("주소: " + order.getAddress());
+            System.out.println("우편번호: " + order.getPostcode());
+            System.out.println("배송 상태: " + order.getOrderStatus());
+
+            // 검증
+            assertThat(order.getOrderStatus()).isEqualTo(OrderStatus.ORDERED);
+            assertThat(order.getEmail()).isNotNull();
+            assertThat(order.getAddress()).isNotNull();
+            assertThat(order.getPostcode()).isNotNull();
+        });
     }
 
     @Test
