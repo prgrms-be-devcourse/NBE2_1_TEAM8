@@ -53,5 +53,8 @@ public class Order {
     public void changeAddress(String address) {
         this.address = address;
     }
+    public void changePostcode(String postcode) {
+        this.postcode = postcode;
+    }
 
 }

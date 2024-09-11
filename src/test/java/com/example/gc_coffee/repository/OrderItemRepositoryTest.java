@@ -67,7 +67,7 @@ public class OrderItemRepositoryTest {
     @Transactional
     @Commit
     public void testUpdateTransactional() {
-        Long oid = 1L;
+        Long oid = 42L;
         Optional<OrderItem> foundOrderItem = orderItemRepository.findByOrder_OrderId(oid);
         Optional<Order> foundOrder = orderRepository.findById(oid);
 
@@ -80,7 +80,7 @@ public class OrderItemRepositoryTest {
 
     @Test
     public void testDelete() {
-        Long oid = 1L;
+        Long oid = 42L;
         Optional<OrderItem> foundOrderItem = orderItemRepository.findByOrder_OrderId(oid);
 
         assertTrue(orderItemRepository.findByOrder_OrderId(foundOrderItem.get().getOrderItemId()).isPresent());

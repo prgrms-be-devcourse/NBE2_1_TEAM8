@@ -1,5 +1,6 @@
 package com.example.gc_coffee.dto.request;
 
+import com.example.gc_coffee.entity.Order;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
@@ -17,6 +18,9 @@ import java.util.List;
 @Data
 @Validated
 public class OrderCreateRequest {
+    //주문 id
+    private Long orderId;
+
     @NotBlank(message = "Email은 비어있을 수 없습니다.")
     @Email(message = "유효한 이메일 형식이 아닙니다.")
     private String email;
@@ -29,4 +33,12 @@ public class OrderCreateRequest {
 
     @NotEmpty(message = "주문 항목은 비어있을 수 없습니다.")
     private List<OrderItemCreateRequest> orderItems;
+
+    public OrderCreateRequest(Order order) {
+        this.orderId = order.getOrderId();
+        this.email = order.getEmail();
+        this.address = order.getAddress();
+        this.postcode = order.getPostcode();
+
+    }
 }

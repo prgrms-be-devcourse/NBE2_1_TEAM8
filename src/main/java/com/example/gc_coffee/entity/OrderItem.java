@@ -38,7 +38,7 @@ public class OrderItem {
 
     @Setter
     @Column(nullable = false)
-    private int quantity;
+    private Integer quantity;
 
     @CreatedDate
     @Column(name = "created_at", nullable = false, updatable = false)
@@ -51,10 +51,10 @@ public class OrderItem {
     @Column(name = "deleted_at")
     private LocalDateTime deletedAt;
 
-    public void changeQuantity(int quantity) {
+
+    public void changeQuantity(Integer quantity) {
         this.quantity = quantity;
     }
-
 
 
 }
