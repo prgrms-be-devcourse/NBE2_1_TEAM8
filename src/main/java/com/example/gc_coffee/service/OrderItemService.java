@@ -12,7 +12,6 @@ import com.example.gc_coffee.exception.OrderItemException;
 import com.example.gc_coffee.exception.ProductException;
 import com.example.gc_coffee.repository.OrderItemRepository;
 import com.example.gc_coffee.repository.OrderRepository;
-import com.example.gc_coffee.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
