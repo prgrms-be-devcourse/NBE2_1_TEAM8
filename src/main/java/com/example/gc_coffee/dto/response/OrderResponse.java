@@ -3,23 +3,38 @@ package com.example.gc_coffee.dto.response;
 import com.example.gc_coffee.entity.Order;
 import com.example.gc_coffee.entity.OrderItem;
 import com.example.gc_coffee.entity.OrderStatus;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Data
 public class OrderResponse {
 
+    @Schema(description = "주문 ID", example = "1")
     private Long orderId;
+
+    @Schema(description = "주문자 이메일", example = "example@example.com")
     private String email;
+
+    @Schema(description = "배송 주소", example = "서울특별시 강남구 역삼동")
     private String address;
+
+    @Schema(description = "우편번호", example = "06130")
     private String postcode;
+
+    @Schema(description = "주문 상태", example = "CONFIRMED")
     private OrderStatus orderStatus;
+
+    @Schema(description = "주문 생성 시간")
     private LocalDateTime createdAt;
+
+    @Schema(description = "총 주문 금액", example = "50000")
     private int totalOrderAmount;
+
+    @Schema(description = "주문 항목 리스트")
     private List<OrderItemResponse> orderItems;
 
     // 생성자
