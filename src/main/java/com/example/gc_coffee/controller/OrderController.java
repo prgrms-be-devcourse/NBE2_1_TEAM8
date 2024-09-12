@@ -25,7 +25,6 @@ public class OrderController {
 
     @PostMapping
     @Operation(summary = "주문 등록", description = "새로운 주문을 등록합니다.")
-    @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "주문 등록 성공 예시")
     public ResponseEntity<ApiResponse<OrderResponse>> register(@Validated @RequestBody OrderCreateRequest orderCreateRequest) {
         OrderResponse orderResponse = orderService.register(orderCreateRequest);
         return ResponseEntity.ok(ApiResponse.success(orderResponse));
@@ -33,7 +32,6 @@ public class OrderController {
 
     @GetMapping("/{email}")
     @Operation(summary = "주문 조회", description = "이메일로 주문 목록을 조회합니다.")
-    @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "주문 조회 성공 예시")
     public ResponseEntity<ApiResponse<List<OrderResponse>>> read(@Parameter(description = "사용자의 이메일", required = true)
                                                                      @PathVariable String email)
     {
