@@ -40,8 +40,10 @@ public class OrderController {
         return ResponseEntity.ok(ApiResponse.success(orderService.readOrders(email)));
     }
 
+    @Operation(summary = "주문 항목 수정", description = "주문에 포함된 아이템의 수량을 수정합니다.")
     @PutMapping("/{orderId}/items")
     public ResponseEntity<ApiResponse> updateOrderItems(
+            @Parameter(description = "수정할 주문 ID를 입력하세요.")
             @PathVariable Long orderId,
             @RequestBody OrderUpdateRequest orderUpdateRequest) {
 
