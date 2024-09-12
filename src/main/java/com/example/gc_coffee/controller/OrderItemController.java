@@ -3,6 +3,7 @@ package com.example.gc_coffee.controller;
 import com.example.gc_coffee.common.ApiResponse;
 import com.example.gc_coffee.dto.request.OrderItemModificationRequest;
 import com.example.gc_coffee.dto.request.OrderItemUpdateRequest;
+import com.example.gc_coffee.dto.response.OrderItemUpdateResponse;
 import com.example.gc_coffee.exception.OrderException;
 import com.example.gc_coffee.exception.OrderItemException;
 import com.example.gc_coffee.exception.OrderItemTaskException;
@@ -49,7 +50,7 @@ public class OrderItemController {
             @Parameter(required = true,description = "주문 목록 고유 번호")
             @PathVariable("id") Long id,
             @RequestBody @Valid OrderItemModificationRequest request
-            ) {
+    ) {
         // 수정 요청의 ID와 PathVariable ID가 일치하는지 확인
         if (!id.equals(request.getOrderItemUpdateRequest().getOrderItemId())) {
             return ResponseEntity.badRequest().body(ApiResponse.error("주문목록 ID가 일치하지 않습니다."));
@@ -66,7 +67,7 @@ public class OrderItemController {
         }
 
         try {
-            OrderItemUpdateRequest updatedOrderItem = orderItemService.modify(request);
+            OrderItemUpdateResponse updatedOrderItem = orderItemService.modify(request);
             return ResponseEntity.ok(ApiResponse.success(updatedOrderItem));
         } catch (OrderItemTaskException e) {
             if (e.getMessage().equals(OrderItemException.NOT_FOUND.get().getMessage())) {
@@ -105,10 +106,3 @@ public class OrderItemController {
     }
 
 }
-
-
-
-
-
-
-
