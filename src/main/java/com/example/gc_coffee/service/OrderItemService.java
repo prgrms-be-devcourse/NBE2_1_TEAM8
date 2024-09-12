@@ -18,6 +18,7 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -27,15 +28,14 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @Log4j2
 public class OrderItemService {
-    private final ProductRepository productRepository;
     private final OrderRepository orderRepository;
     private final OrderItemRepository orderItemRepository;
 
     public List<OrderItemResponse> getOrderedItemsByEmail(String email) {
-        List<OrderItem> orderItems = orderItemRepository.findByOrder_OrderStatus(OrderStatus.ORDERED);
+        List<OrderItem> orderItems = orderItemRepository.findByOrder_OrderStatusIn(Arrays.asList(OrderStatus.ORDERED, OrderStatus.CONFIRMED, OrderStatus.SHIPPED, OrderStatus.DELIVERED));
 
         return orderItems.stream()
-                .filter(orderItem -> orderItem.getOrder().getEmail().equals(email))  // 이메일로 필터링
+                .filter(orderItem -> orderItem.getOrder().getEmail().equals(email))
                 .map(orderItem -> {
                     Order order = orderItem.getOrder();
                     Product product = orderItem.getProduct();

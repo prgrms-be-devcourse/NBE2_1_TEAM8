@@ -18,6 +18,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Commit;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -33,8 +35,6 @@ public class OrderItemRepositoryTest {
     private ProductRepository productRepository;
     @Autowired
     private OrderRepository orderRepository;
-    private Product product;
-    private Order order;
 
     @BeforeEach
     public void setUp() {
@@ -67,13 +67,9 @@ public class OrderItemRepositoryTest {
 
     @Test
     public void testFindByOrderStatus() {
-        // 상태가 ORDERED인 주문들을 조회
-        OrderStatus status = OrderStatus.ORDERED;
+        List<OrderItem> orderItems = orderItemRepository.findByOrder_OrderStatusIn(
+                Arrays.asList(OrderStatus.ORDERED, OrderStatus.CONFIRMED, OrderStatus.SHIPPED, OrderStatus.DELIVERED));
 
-        // 주문 상태가 ORDERED인 항목을 조회
-        List<OrderItem> orderItems = orderItemRepository.findByOrder_OrderStatus(status);
-
-        // 조회된 항목이 비어 있지 않음을 확인하고 주문 정보를 검증
         assertThat(orderItems).isNotEmpty();
 
         orderItems.forEach(orderItem -> {
@@ -84,8 +80,7 @@ public class OrderItemRepositoryTest {
             System.out.println("우편번호: " + order.getPostcode());
             System.out.println("배송 상태: " + order.getOrderStatus());
 
-            // 검증
-            assertThat(order.getOrderStatus()).isEqualTo(OrderStatus.ORDERED);
+            assertThat(order.getOrderStatus()).isIn(OrderStatus.ORDERED, OrderStatus.CONFIRMED);
             assertThat(order.getEmail()).isNotNull();
             assertThat(order.getAddress()).isNotNull();
             assertThat(order.getPostcode()).isNotNull();
