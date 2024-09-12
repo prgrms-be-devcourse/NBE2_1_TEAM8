@@ -1,8 +1,8 @@
 package com.example.gc_coffee.service;
 
 import com.example.gc_coffee.dto.request.OrderItemModificationRequest;
-import com.example.gc_coffee.dto.request.OrderItemUpdateRequest;
 import com.example.gc_coffee.dto.response.AfterOrderItemResponse;
+import com.example.gc_coffee.dto.response.OrderItemUpdateResponse;
 import com.example.gc_coffee.entity.Order;
 import com.example.gc_coffee.entity.OrderItem;
 import com.example.gc_coffee.entity.OrderStatus;
@@ -53,7 +53,7 @@ public class OrderItemService {
     }
   
     @Transactional
-    public OrderItemUpdateRequest modify(OrderItemModificationRequest request) {
+    public OrderItemUpdateResponse modify(OrderItemModificationRequest request) {
         // 수정하려는 주문 목록을 데이터베이스에서 조회
         OrderItem orderItem = orderItemRepository.findById(request.getOrderItemUpdateRequest().getOrderItemId())
                 .orElseThrow(() -> OrderItemException.NOT_FOUND.get());
@@ -79,7 +79,7 @@ public class OrderItemService {
             orderRepository.save(order);
 
             // 수정된 내용을 다시 반환
-            return new OrderItemUpdateRequest(orderItem);
+            return OrderItemUpdateResponse.fromOrderItem(orderItem);
 
         } catch (Exception e) {
             log.error("Error modifying product: " + e.getMessage());
