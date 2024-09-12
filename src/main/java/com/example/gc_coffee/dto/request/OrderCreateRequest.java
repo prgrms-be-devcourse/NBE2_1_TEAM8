@@ -1,6 +1,7 @@
 package com.example.gc_coffee.dto.request;
 
 import com.example.gc_coffee.entity.Order;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
