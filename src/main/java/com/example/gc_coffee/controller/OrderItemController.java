@@ -9,7 +9,6 @@ import com.example.gc_coffee.exception.OrderItemTaskException;
 import com.example.gc_coffee.exception.OrderTaskException;
 import com.example.gc_coffee.service.OrderItemService;
 import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,19 +17,21 @@ import com.example.gc_coffee.dto.response.OrderItemResponse;
 import java.util.List;
 
 @RestController
-@RequiredArgsConstructor
 @RequestMapping("/api/v1/orderitem")
 public class OrderItemController {
 
     private final OrderItemService orderItemService;
 
-    @GetMapping
-    public ResponseEntity<List<OrderItemResponse>> getOrderItemsByEmail(@RequestParam String email) {
+    public OrderItemController(OrderItemService orderItemService) {
+        this.orderItemService = orderItemService;
+    }
+
+    @GetMapping("/{email}")
+    public ResponseEntity<List<OrderItemResponse>> getOrderItemsByEmail(@PathVariable String email) {
         List<OrderItemResponse> orderItems = orderItemService.getOrderedItemsByEmail(email);
-        if (orderItems.isEmpty()) {
-            return ResponseEntity.noContent().build();
-        }
-        return ResponseEntity.ok(orderItems);
+        return orderItems.isEmpty()
+                ? ResponseEntity.noContent().build()
+                : ResponseEntity.ok(orderItems);
     }
 
     //주문 목록 수정
