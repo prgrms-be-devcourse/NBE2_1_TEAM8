@@ -1,10 +1,12 @@
 package com.example.gc_coffee.service;
 
-import com.example.gc_coffee.dto.request.OrderCreateRequest;
 import com.example.gc_coffee.dto.request.OrderItemModificationRequest;
 import com.example.gc_coffee.dto.request.OrderItemUpdateRequest;
+import com.example.gc_coffee.dto.response.OrderItemResponse;
 import com.example.gc_coffee.entity.Order;
 import com.example.gc_coffee.entity.OrderItem;
+import com.example.gc_coffee.entity.OrderStatus;
+import com.example.gc_coffee.entity.Product;
 import com.example.gc_coffee.exception.OrderException;
 import com.example.gc_coffee.exception.OrderItemException;
 import com.example.gc_coffee.exception.ProductException;
@@ -16,14 +18,8 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
-
-import com.example.gc_coffee.dto.response.OrderItemResponse;
-import com.example.gc_coffee.entity.OrderStatus;
-import com.example.gc_coffee.entity.Product;
-import org.springframework.beans.factory.annotation.Autowired;
-
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
