@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import com.example.gc_coffee.dto.response.OrderItemResponse;
 
 import java.util.List;
-
+@Tag(name="OrderItem", description = "주문 후 관리 API")
 @RestController
 @RequestMapping("/api/v1/orderitem")
 @Tag(name = "OrderItem", description = "주문 후 관리 API")
@@ -42,7 +42,11 @@ public class OrderItemController {
 
     //주문 목록 수정
     @PutMapping("/{id}")
+    @Operation(summary = "주문 목록 수정", description = "주문 목록 하나의 수량, 주소, 우편번호를 수정합니다.")
+    @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "성공")
+    @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "400", description = "파라미터 오류")
     public ResponseEntity<ApiResponse> modify(
+            @Parameter(required = true,description = "주문 목록 고유 번호")
             @PathVariable("id") Long id,
             @RequestBody @Valid OrderItemModificationRequest request
             ) {
@@ -81,7 +85,12 @@ public class OrderItemController {
 
     //주문 목록 삭제
     @DeleteMapping("/{id}")
-    public ResponseEntity<ApiResponse> remove(@PathVariable("id") Long id) {
+    @Operation(summary = "주문 목록 삭제", description = "주문 목록 하나를 삭제합니다.")
+    @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "성공")
+    @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "400", description = "파라미터 오류")
+    public ResponseEntity<ApiResponse> remove(
+            @Parameter(required = true,description = "주문 목록 고유 번호")
+            @PathVariable("id") Long id) {
         try {
             orderItemService.remove(id);
             return ResponseEntity.ok(ApiResponse.success(null)); // 성공 응답
