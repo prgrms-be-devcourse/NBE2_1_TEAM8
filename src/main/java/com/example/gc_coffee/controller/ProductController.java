@@ -61,10 +61,13 @@ public class ProductController {
             return ResponseEntity.badRequest().body(ApiResponse.error("상품 ID가 일치하지 않습니다."));
         }
 
-        ProductUpdateRequest updatedProduct;
         try {
-            updatedProduct = productService.modify(request);
-            return ResponseEntity.ok(ApiResponse.success(null));
+            // ProductService의 modify 메서드는 이제 ProductResponse를 반환합니다.
+            ProductResponse updatedProduct = productService.modify(request);
+
+            // 이미 ProductResponse 타입으로 반환된 객체를 사용
+            return ResponseEntity.ok(ApiResponse.success(updatedProduct));
+
         } catch (ProductTaskException e) {
             if (e.getMessage().equals(ProductException.NOT_FOUND.get().getMessage())) {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ApiResponse.error("상품을 찾을 수 없습니다."));
