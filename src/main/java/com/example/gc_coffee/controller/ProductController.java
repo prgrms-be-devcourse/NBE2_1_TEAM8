@@ -36,6 +36,7 @@ public class ProductController {
     /**
      * 상품 등록
      */
+    @Operation(summary = "상품 등록" , description = "상품 카테고리, 상품 이름, 가격, 설명을 기재합니다.")
     @PostMapping
     public ResponseEntity<ApiResponse> register(
             @RequestBody @Valid final ProductCreateRequest request
@@ -100,6 +101,8 @@ public class ProductController {
     /**
      * 상품 전체 조회
      */
+    @Operation(summary = "상품 전체 조회" , description = "상품 번호, 상품 이름, 카테고리, 가격, 설명, 생성 시간, 수정 시간을 " +
+            "리스트 형태로 조회합니다.")
     @GetMapping
     public ResponseEntity<ApiResponse> retrieveAll() {
         List<Product> productList = productService.retrieveAll();
