@@ -2,6 +2,7 @@ package com.example.gc_coffee.service;
 
 import com.example.gc_coffee.dto.request.ProductCreateRequest;
 import com.example.gc_coffee.dto.request.ProductUpdateRequest;
+import com.example.gc_coffee.dto.response.ProductResponse;
 import com.example.gc_coffee.entity.Product;
 import com.example.gc_coffee.exception.ProductException;
 import com.example.gc_coffee.repository.ProductRepository;
@@ -45,7 +46,7 @@ public class ProductService {
      * 상품 수정
      */
     @Transactional
-    public ProductUpdateRequest modify(ProductUpdateRequest request) {
+    public ProductResponse modify(ProductUpdateRequest request) {  // 반환 타입을 ProductResponse로 수정
         // 수정하려는 상품을 데이터베이스에서 조회
         Product product = productRepository.findById(request.getPid())
                 .orElseThrow(() -> ProductException.NOT_FOUND.get());
@@ -71,8 +72,8 @@ public class ProductService {
             // 변경된 상품을 저장 (자동으로 변경 감지 후 DB에 반영)
             productRepository.save(product);
 
-            // 수정된 내용을 다시 반환
-            return new ProductUpdateRequest(product);
+            // 수정된 내용을 다시 반환 (ProductResponse로 변환)
+            return ProductResponse.from(product);  // 반환 타입에 맞게 수정
 
         } catch (Exception e) {
             log.error("Error modifying product: " + e.getMessage());

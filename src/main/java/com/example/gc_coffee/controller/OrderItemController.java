@@ -12,7 +12,6 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,19 +20,24 @@ import com.example.gc_coffee.dto.response.OrderItemResponse;
 import java.util.List;
 @Tag(name="OrderItem", description = "주문 후 관리 API")
 @RestController
-@RequiredArgsConstructor
 @RequestMapping("/api/v1/orderitem")
+@Tag(name = "OrderItem", description = "주문 후 관리 API")
 public class OrderItemController {
 
     private final OrderItemService orderItemService;
 
-    @GetMapping
-    public ResponseEntity<List<OrderItemResponse>> getOrderItemsByEmail(@RequestParam String email) {
+    public OrderItemController(OrderItemService orderItemService) {
+        this.orderItemService = orderItemService;
+    }
+
+    @Operation(summary = "주문 후 목록 조회", description = "주문이 완료된 목록을 조회합니다.")
+    @GetMapping("/{email}")
+    public ResponseEntity<List<OrderItemResponse>> getOrderItemsByEmail(
+            @Parameter(description = "주문자의 이메일 주소", example = "user@example.com") @PathVariable String email) {
         List<OrderItemResponse> orderItems = orderItemService.getOrderedItemsByEmail(email);
-        if (orderItems.isEmpty()) {
-            return ResponseEntity.noContent().build();
-        }
-        return ResponseEntity.ok(orderItems);
+        return orderItems.isEmpty()
+                ? ResponseEntity.noContent().build()
+                : ResponseEntity.ok(orderItems);
     }
 
     //주문 목록 수정
