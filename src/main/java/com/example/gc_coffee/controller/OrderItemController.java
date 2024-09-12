@@ -15,7 +15,7 @@ import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import com.example.gc_coffee.dto.response.OrderItemResponse;
+import com.example.gc_coffee.dto.response.AfterOrderItemResponse;
 
 import java.util.List;
 @Tag(name="OrderItem", description = "주문 후 관리 API")
@@ -32,9 +32,9 @@ public class OrderItemController {
 
     @Operation(summary = "주문 후 목록 조회", description = "주문이 완료된 목록을 조회합니다.")
     @GetMapping("/{email}")
-    public ResponseEntity<List<OrderItemResponse>> getOrderItemsByEmail(
+    public ResponseEntity<List<AfterOrderItemResponse>> getOrderItemsByEmail(
             @Parameter(description = "주문자의 이메일 주소", example = "user@example.com") @PathVariable String email) {
-        List<OrderItemResponse> orderItems = orderItemService.getOrderedItemsByEmail(email);
+        List<AfterOrderItemResponse> orderItems = orderItemService.getOrderedItemsByEmail(email);
         return orderItems.isEmpty()
                 ? ResponseEntity.noContent().build()
                 : ResponseEntity.ok(orderItems);

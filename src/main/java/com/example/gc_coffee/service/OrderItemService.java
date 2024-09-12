@@ -2,7 +2,7 @@ package com.example.gc_coffee.service;
 
 import com.example.gc_coffee.dto.request.OrderItemModificationRequest;
 import com.example.gc_coffee.dto.request.OrderItemUpdateRequest;
-import com.example.gc_coffee.dto.response.OrderItemResponse;
+import com.example.gc_coffee.dto.response.AfterOrderItemResponse;
 import com.example.gc_coffee.entity.Order;
 import com.example.gc_coffee.entity.OrderItem;
 import com.example.gc_coffee.entity.OrderStatus;
@@ -12,12 +12,12 @@ import com.example.gc_coffee.exception.OrderItemException;
 import com.example.gc_coffee.exception.ProductException;
 import com.example.gc_coffee.repository.OrderItemRepository;
 import com.example.gc_coffee.repository.OrderRepository;
-import com.example.gc_coffee.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -27,19 +27,18 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @Log4j2
 public class OrderItemService {
-    private final ProductRepository productRepository;
     private final OrderRepository orderRepository;
     private final OrderItemRepository orderItemRepository;
 
-    public List<OrderItemResponse> getOrderedItemsByEmail(String email) {
-        List<OrderItem> orderItems = orderItemRepository.findByOrder_OrderStatus(OrderStatus.ORDERED);
+    public List<AfterOrderItemResponse> getOrderedItemsByEmail(String email) {
+        List<OrderItem> orderItems = orderItemRepository.findByOrder_OrderStatusIn(Arrays.asList(OrderStatus.ORDERED, OrderStatus.CONFIRMED, OrderStatus.SHIPPED, OrderStatus.DELIVERED));
 
         return orderItems.stream()
-                .filter(orderItem -> orderItem.getOrder().getEmail().equals(email))  // 이메일로 필터링
+                .filter(orderItem -> orderItem.getOrder().getEmail().equals(email))
                 .map(orderItem -> {
                     Order order = orderItem.getOrder();
                     Product product = orderItem.getProduct();
-                    return OrderItemResponse.builder()
+                    return AfterOrderItemResponse.builder()
                             .orderItemId(orderItem.getOrderItemId())
                             .productId(orderItem.getProduct().getId())
                             .quantity(orderItem.getQuantity())
