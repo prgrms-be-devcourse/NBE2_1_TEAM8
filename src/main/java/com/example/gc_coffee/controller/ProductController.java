@@ -9,6 +9,9 @@ import com.example.gc_coffee.exception.ProductTaskException;
 import com.example.gc_coffee.dto.response.ProductResponse;
 import com.example.gc_coffee.entity.Product;
 import com.example.gc_coffee.service.ProductService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -25,6 +28,7 @@ import java.util.stream.Collectors;
 @RequestMapping("api/v1/products")
 @RequiredArgsConstructor
 @RestController
+@Tag(name = "Product Controller" , description = "상품 컨트롤러" )
 public class ProductController {
 
     private final ProductService productService;
@@ -44,8 +48,10 @@ public class ProductController {
 
      * 상품 수정
      */
+    @Operation(summary = "상품 수정" , description = "상품 이름, 설명, 카테고리, 가격을 수정합니다.")
     @PutMapping("/{id}")
     public ResponseEntity<ApiResponse> modify(
+            @Parameter(description = "수정할 상품 id를 입력하세요.")
             @PathVariable("id") Long id,
             @RequestBody @Valid ProductUpdateRequest request
     ) {
@@ -70,8 +76,11 @@ public class ProductController {
     /**
      * 상품 삭제
      */
+    @Operation(summary = "상품 삭제" , description = "등록된 상품을 삭제합니다.")
     @DeleteMapping("/{id}")
-    public ResponseEntity<ApiResponse> remove(@PathVariable("id") Long id) {
+    public ResponseEntity<ApiResponse> remove(
+                            @Parameter(description = "삭제할 상품 id를 입력하세요.")
+                            @PathVariable("id") Long id) {
         try {
             productService.remove(id);
             return ResponseEntity.ok(ApiResponse.success(null)); // 성공 응답
