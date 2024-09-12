@@ -8,6 +8,9 @@ import com.example.gc_coffee.exception.OrderItemException;
 import com.example.gc_coffee.exception.OrderItemTaskException;
 import com.example.gc_coffee.exception.OrderTaskException;
 import com.example.gc_coffee.service.OrderItemService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +21,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/orderitem")
+@Tag(name = "OrderItem", description = "주문 후 관리 API")
 public class OrderItemController {
 
     private final OrderItemService orderItemService;
@@ -26,8 +30,10 @@ public class OrderItemController {
         this.orderItemService = orderItemService;
     }
 
+    @Operation(summary = "주문 후 목록 조회", description = "주문이 완료된 목록을 조회합니다.")
     @GetMapping("/{email}")
-    public ResponseEntity<List<OrderItemResponse>> getOrderItemsByEmail(@PathVariable String email) {
+    public ResponseEntity<List<OrderItemResponse>> getOrderItemsByEmail(
+            @Parameter(description = "주문자의 이메일 주소", example = "user@example.com") @PathVariable String email) {
         List<OrderItemResponse> orderItems = orderItemService.getOrderedItemsByEmail(email);
         return orderItems.isEmpty()
                 ? ResponseEntity.noContent().build()
