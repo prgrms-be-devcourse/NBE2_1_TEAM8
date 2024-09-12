@@ -28,7 +28,7 @@ import java.util.stream.Collectors;
 @RequestMapping("api/v1/products")
 @RequiredArgsConstructor
 @RestController
-@Tag(name = "Product Controller" , description = "상품 컨트롤러" )
+@Tag(name = "Product" , description = "상품 관련 API" )
 public class ProductController {
 
     private final ProductService productService;
