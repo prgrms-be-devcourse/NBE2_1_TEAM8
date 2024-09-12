@@ -2,7 +2,7 @@ package com.example.gc_coffee.service;
 
 import com.example.gc_coffee.dto.request.OrderItemModificationRequest;
 import com.example.gc_coffee.dto.request.OrderItemUpdateRequest;
-import com.example.gc_coffee.dto.response.OrderItemResponse;
+import com.example.gc_coffee.dto.response.AfterOrderItemResponse;
 import com.example.gc_coffee.entity.Order;
 import com.example.gc_coffee.entity.OrderItem;
 import com.example.gc_coffee.entity.OrderStatus;
@@ -30,7 +30,7 @@ public class OrderItemService {
     private final OrderRepository orderRepository;
     private final OrderItemRepository orderItemRepository;
 
-    public List<OrderItemResponse> getOrderedItemsByEmail(String email) {
+    public List<AfterOrderItemResponse> getOrderedItemsByEmail(String email) {
         List<OrderItem> orderItems = orderItemRepository.findByOrder_OrderStatusIn(Arrays.asList(OrderStatus.ORDERED, OrderStatus.CONFIRMED, OrderStatus.SHIPPED, OrderStatus.DELIVERED));
 
         return orderItems.stream()
@@ -38,7 +38,7 @@ public class OrderItemService {
                 .map(orderItem -> {
                     Order order = orderItem.getOrder();
                     Product product = orderItem.getProduct();
-                    return OrderItemResponse.builder()
+                    return AfterOrderItemResponse.builder()
                             .orderItemId(orderItem.getOrderItemId())
                             .productId(orderItem.getProduct().getId())
                             .quantity(orderItem.getQuantity())
